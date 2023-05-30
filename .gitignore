@@ -1,0 +1,3 @@
+# Aqui se anotan los archivos que no queremos compartir en el github.
+node_modules
+.env

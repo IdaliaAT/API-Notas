@@ -5,55 +5,65 @@ import User from './user/User.model.js';
 import TopicCategory from './topicCategory/TopicCategory.model.js';
 import Notes from './notes/Notes.model.js';
 import Status from './status/Status.model.js';
+import ResourceType from './resourceType/ResourceType.model.js';
 
 // Lo siguiente es la asociacion de Category con User.
 Category.belongsTo(User, {
-	foreignKey: 'idUser',
-	onDelete: 'CASCADE',
-	onUpdate: 'CASCADE',
+    foreignKey: 'idUser',
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
 });
 User.hasMany(Category, {
-	foreignKey: 'idUser',
+    foreignKey: 'idUser',
 });
 
 // Lo siguiente es la asociacion o relacion de Category con Topic, mediante una tabla de "union" o "intermedia".
 Category.belongsToMany(Topic, {
-	through: TopicCategory,
-	foreignKey: 'idCategory',
+    through: TopicCategory,
+    foreignKey: 'idCategory',
 });
 Topic.belongsToMany(Category, {
-	through: TopicCategory,
-	foreignKey: 'idTopic',
+    through: TopicCategory,
+    foreignKey: 'idTopic',
 });
 
 // relación/asociación tablas topic y status
 Topic.belongsTo(Status, {
-	foreignKey: 'idStatus',
-	onDelete: 'RESTRICT',
-	onUpdate: 'CASCADE',
+    foreignKey: 'idStatus',
+    onDelete: 'RESTRICT',
+    onUpdate: 'CASCADE',
 });
 Status.hasMany(Topic, {
-	foreignKey: 'idStatus',
+    foreignKey: 'idStatus',
 });
 
 // relación/asociación tablas resource y topic
 Resource.belongsTo(Topic, {
-	foreignKey: 'idTopic',
-	onDelete: 'SET NULL',
-	onUpdate: 'CASCADE',
+    foreignKey: 'idTopic',
+    onDelete: 'SET NULL',
+    onUpdate: 'CASCADE',
 });
 Topic.hasMany(Resource, {
-	foreignKey: 'idTopic',
+    foreignKey: 'idTopic',
 });
 
 // relación/asociación tablas notes y topic
 Notes.belongsTo(Topic, {
-	foreignKey: 'idTopic',
-	onDelete: 'CASCADE',
-	onUpdate: 'CASCADE',
+    foreignKey: 'idTopic',
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
 });
 Topic.hasMany(Notes, {
-	foreignKey: 'idTopic',
+    foreignKey: 'idTopic',
 });
+// Relacion entre tablas de resource y resourceType
+Resource.belongsTo(ResourceType, {
+    foreignKey: 'idResourceType',
+    onDelete: 'RESTRICT',
+    onUpdate: 'CASCADE',
+});
+ResourceType.hasMany(Resource, {
+    foreignKey: 'idResourceType',
+})
 
-export { Category, Resource, Topic, User, TopicCategory, Notes, Status };
+export { Category, Resource, Topic, User, TopicCategory, Notes, Status, ResourceType };

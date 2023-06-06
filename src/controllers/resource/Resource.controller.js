@@ -9,6 +9,8 @@ class ResourceController {
         const { id } = req.params
         res.status(200).send("This is your route of Resource by id")
     }
+
+    // Este esta mal hecho.
     static async createResource(req, res) {
         try {
             const { resourceType } = req.body

@@ -1,21 +1,55 @@
-import { Category } from '../../models/index.js';
+import { Sequelize } from 'sequelize';
+import { Category, Notes, Resource, Status, Topic } from '../../models/index.js';
 
 class CategoryController {
     static async getAllCategories(req, res) {
         try {
             const categories = await Category.findAll({
-                attributes: ['id', 'name', ]
-            })
+                    attributes: ['id', 'name', ]
+                })
+                //console.log("🚀 ~ file: Category.controller.js:9 ~ CategoryController ~ getAllCategories ~ categories:", categories.length)
+            if (!categories.length) throw { message: "There are not categories", codeStatus: 404 }
+            res.status(200).send({ success: true, message: "These are your Categories", results: categories })
         } catch (err) {
-
+            const codeStatus = err.codeStatus || 500
+            const message = err.message || "Internal Server Error"
+            res.status(codeStatus).send({ success: false, message })
         }
-
-
-        res.status(200).send('These are all of your Categories');
     }
-    static getCategoryById(req, res) {
-        const { id } = req.params;
-        res.status(200).send('This is your route of Category by id');
+    static async getCategoryById(req, res) {
+        try {
+            const { id } = req.params;
+            if (!id) throw { message: "Id does not exist", codeStatus: 400 }
+
+            const categoryById = await Category.findByPk(id, {
+                attributes: { exclude: ["idUser"] },
+                include: {
+                    model: Topic,
+                    attributes: { exclude: ["idStatus"] },
+                    through: { attributes: [] },
+                    include: [{ model: Status }, {
+                            model: Resource,
+                            attributes: [
+                                [Sequelize.fn("COUNT", Sequelize.fn("DISTINCT", Sequelize.col("resourceId"))), "TotalResources"]
+                            ]
+                        },
+                        {
+                            model: Notes,
+                            attributes: [
+                                [Sequelize.fn("COUNT", Sequelize.fn("DISTINCT", Sequelize.col("noteId"))), "TotalNotes"]
+                            ],
+
+                        }
+                    ],
+                },
+            })
+
+            res.status(200).send({ success: true, message: "This is your route of Category by id", results: categoryById });
+        } catch (err) {
+            const codeStatus = err.codeStatus || 500
+            const message = err.message || "Internal Server Error"
+            res.status(codeStatus).send({ success: false, message })
+        }
     }
     static async createCategory(req, res) {
         try {
@@ -45,11 +79,33 @@ class CategoryController {
         }
     }
 
-    static updateCategory(req, res) {
+    static async updateCategory(req, res) {
+            try {
+                const { id } = req.params
+                const { name } = req.body
+                if (!name) throw { message: "Category field is empty", codeStatus: 400 }
+                const category = await Category.update({ name }, {
+                    where: {
+                        id
+                    }
+                })
+                if (!category[0]) throw { message: "Your category is not updated", codeStatus: 400 }
+                res.status(202).send({ success: true, message: "Your category has been updated" })
+            } catch (err) {
+                const codeStatus = err.codeStatus || 500
+                const message = err.message || "Internal Server Error"
+                res.status(codeStatus).send({ success: false, message })
+            }
+        }
         // Se trabaja con el id params en la operacion actualizar u update, para agregarlo en la condicion y asi no afecte todos los registros.	No olvidar del where.
-        res.status(202).send('Your Category has been updated');
-    }
-    static deleteCategory(req, res) {
+
+
+    static async deleteCategory(req, res) {
+        try {
+
+        } catch (err) {
+
+        }
         // Se trabaja con el id params en la operacion delete para agregarlo en la condicion y asi no afecte todos los registros. No olvidar del where.
         res.status(202).send('Your Category has been deleted');
     }

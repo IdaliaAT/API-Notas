@@ -82,9 +82,9 @@ class CategoryController {
     static async updateCategory(req, res) {
             try {
                 const { id } = req.params
-                const { name } = req.body
+                const { name, description } = req.body
                 if (!name) throw { message: "Category field is empty", codeStatus: 400 }
-                const category = await Category.update({ name }, {
+                const category = await Category.update({ name, description }, {
                     where: {
                         id
                     }

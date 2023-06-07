@@ -33,10 +33,10 @@ class TopicController {
     }
     static async createTopic(req, res) {
         try {
-            const { name, description, creationDate, image, idStatus } = req.body;
+            const { name, description, image, idStatus } = req.body;
             if (!name) throw { message: 'Name cannot be empty', codeStatus: 400 };
-
-            const topic = await Topic.create({ name, description, creationDate, image, idStatus });
+            //  Por hacer el creationDate para que cuando se cree el topico se agregue la fecha en automatico
+            const topic = await Topic.create({ name, description, creationDate: "", image, idStatus });
             if (!topic)
                 throw {
                     message: 'There is an unexpected error, Topic is not created',

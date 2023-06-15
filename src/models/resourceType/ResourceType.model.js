@@ -10,6 +10,9 @@ ResourceType.init({
     },
     image: {
         type: Dt.TEXT,
+    },
+    idUser: {
+        type: Dt.INTEGER,
     }
 }, {
     sequelize: dbcon,

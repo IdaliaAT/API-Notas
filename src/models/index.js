@@ -64,6 +64,24 @@ Resource.belongsTo(ResourceType, {
 });
 ResourceType.hasMany(Resource, {
     foreignKey: 'idResourceType',
-})
+});
+// Relacion entre tablas status y user
+Status.belongsTo(User, {
+    foreignKey: 'idUser',
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+});
+User.hasMany(Status, {
+        foreignKey: 'idUser',
+    })
+    // Relacion entre tablas resourceType y user
+ResourceType.belongsTo(User, {
+    foreignKey: 'idUser',
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+});
+User.hasMany(ResourceType, {
+    foreignKey: 'idUser',
+});
 
 export { Category, Resource, Topic, User, TopicCategory, Notes, Status, ResourceType };

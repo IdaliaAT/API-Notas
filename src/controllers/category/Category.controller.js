@@ -27,24 +27,25 @@ class CategoryController {
                     model: Topic,
                     attributes: { exclude: ["idStatus"] },
                     through: { attributes: [] },
-                    include: [{ model: Status }, {
+                    include: [
+                        { model: Status },
+                        {
                             model: Resource,
-                            attributes: [
-                                [Sequelize.fn("COUNT", Sequelize.fn("DISTINCT", Sequelize.col("resourceId"))), "TotalResources"]
-                            ]
+                            attributes: ["resourceId", "titleResource"],
                         },
                         {
                             model: Notes,
-                            attributes: [
-                                [Sequelize.fn("COUNT", Sequelize.fn("DISTINCT", Sequelize.col("noteId"))), "TotalNotes"]
-                            ],
-
-                        }
+                            attributes: ["noteId", "titleNote"],
+                        },
                     ],
                 },
-            })
+            });
 
-            res.status(200).send({ success: true, message: "This is your route of Category by id", results: categoryById });
+            res.status(200).send({
+                success: true,
+                message: "This is your route of Category by id",
+                results: categoryById
+            });
         } catch (err) {
             const codeStatus = err.codeStatus || 500
             const message = err.message || "Internal Server Error"
@@ -99,15 +100,21 @@ class CategoryController {
         }
         // Se trabaja con el id params en la operacion actualizar u update, para agregarlo en la condicion y asi no afecte todos los registros.	No olvidar del where.
 
-
     static async deleteCategory(req, res) {
         try {
-
+            const { id } = req.params
+            const category = await Category.destroy({
+                where: { id }
+            })
+            console.log("🚀 ~ file: Category.controller.js:110 ~ CategoryController ~ deleteCategory ~ category:", category)
+            if (!category) throw { message: "Your is not deleted", codeStatus: 404 }
+            res.status(202).send({ success: true, message: "Your category has been deleted" })
         } catch (err) {
-
+            const codeStatus = err.codeStatus || 500
+            const message = err.message || "Internal Server Error"
+            res.status(codeStatus).send({ success: false, message });
         }
-        // Se trabaja con el id params en la operacion delete para agregarlo en la condicion y asi no afecte todos los registros. No olvidar del where.
-        res.status(202).send('Your Category has been deleted');
+        // Se trabaja con el id params en la operacion delete para agregarlo en la condicion y asi no afecte todos los registros del where.
     }
 }
 export default CategoryController;

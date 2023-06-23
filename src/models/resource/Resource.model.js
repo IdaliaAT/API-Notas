@@ -3,12 +3,7 @@ import dbcon from '../../db/db.js';
 
 class Resource extends Model {}
 Resource.init({
-    resourceId: {
-        type: Dt.INTEGER,
-        autoIncrement: true,
-        primaryKey: true,
-        allowNull: false,
-    },
+
     titleResource: {
         type: Dt.STRING,
         allowNull: false,

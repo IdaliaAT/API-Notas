@@ -5,6 +5,7 @@ import topicRoutes from './topic/topic.routes.js';
 import resourceRoutes from './resource/resource.routes.js';
 import notesRoutes from './notes/notes.routes.js';
 import statusRoutes from './status/Status.routes.js';
+import resourceTypeRoutes from './resourceType/resourceType.routes.js';
 
 const routes = Router(); // aqui asignamos todos los metodos de Router
 
@@ -15,5 +16,6 @@ routes.use('/topic', topicRoutes);
 routes.use('/resource', resourceRoutes);
 routes.use('/notes', notesRoutes); //coregir
 routes.use('/status', statusRoutes); //coregir
+routes.use('/resourceType', resourceTypeRoutes)
 
 export default routes;

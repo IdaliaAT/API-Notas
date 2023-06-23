@@ -11,7 +11,7 @@ class UserController {
                 .status(200)
                 .send({
                     success: true,
-                    message: 'These are all users',
+                    message: 'Your users are:',
                     results: users,
                 });
         } catch (err) {
@@ -53,7 +53,7 @@ class UserController {
 
             res
                 .status(201)
-                .send({ success: true, message: 'Your new user has been created' });
+                .send({ success: true, message: 'Your new user has been created successfully' });
         } catch (err) {
             const codeStatus = err.codeStatus || 500;
             const message = err.message || 'Internal Server Error';

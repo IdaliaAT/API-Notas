@@ -5,10 +5,10 @@ class CategoryController {
     static async getAllCategories(req, res) {
         try {
             const categories = await Category.findAll({
-                    attributes: ['id', 'name']
+                    attributes: ['id', 'name', 'description']
                 })
                 //console.log("🚀 ~ file: Category.controller.js:9 ~ CategoryController ~ getAllCategories ~ categories:", categories.length)
-            if (!categories.length) throw { message: "There are not categories", codeStatus: 404 }
+            if (!categories.length) throw { message: "No categories to display", codeStatus: 404 }
             res.status(200).send({ success: true, message: "These are your Categories", results: categories })
         } catch (err) {
             const codeStatus = err.codeStatus || 500

@@ -4,12 +4,7 @@ import dbcon from '../../db/db.js';
 class Notes extends Model {}
 
 Notes.init({
-    noteId: {
-        type: Dt.INTEGER,
-        autoIncrement: true,
-        primaryKey: true,
-        allowNull: false,
-    },
+
     titleNote: {
         type: Dt.STRING,
     },

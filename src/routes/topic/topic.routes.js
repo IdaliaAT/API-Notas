@@ -9,7 +9,7 @@ const topicRoutes = Router();
 // Aqui solicita dos parametros.
 // La ruta que esta arriba es la que manda, ejm linea 12.
 
-topicRoutes.get('/', TopicController.getAllTopics);
+//topicRoutes.get('/', TopicController.getAllTopics);
 // TopicRoutes.get("/prueba", (req, res) => {
 //     res.status(200).send("This is a test")
 // })

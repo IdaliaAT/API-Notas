@@ -17,6 +17,7 @@ topicRoutes.get('/:id', TopicController.getTopicById);
 // En las lineas 13, 14 y 15 se pisan las rutas por usar el mismo verbo ejm get, porque estan al mismo nivel, pero si no tiene los : el id, no se pisan . Hay que darle otro nivel a mi ruta /….
 
 topicRoutes.post('/', TopicController.createTopic);
+topicRoutes.post('/:idCategory', TopicController.createTopicToCategory)
 topicRoutes.delete('/:id', TopicController.deleteTopic);
 topicRoutes.put('/:id', TopicController.updateTopic);
 

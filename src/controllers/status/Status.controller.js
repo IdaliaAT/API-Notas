@@ -56,7 +56,7 @@ class StatusController {
             const updateStatus = await Status.update({ status: newStatus }, { where: { id } })
                 //console.log("🚀 ~ file: Status.controller.js:56 ~ StatusController ~ updateStatus ~ updateStatus:", updateStatus[0])
                 // Para acceder a una posicion ponemos [0]        Este es solo el elemento en la posicion.
-            if (!updateStatus[0]) throw { message: "Your status was not updated", codeStatus: 400 }
+            if (!updateStatus[0]) throw { message: "Your Status was not updated", codeStatus: 400 }
             res.status(200).send({ success: true, message: "Your status has been updated" });
         } catch (err) {
             const codeStatus = err.codeStatus || 500

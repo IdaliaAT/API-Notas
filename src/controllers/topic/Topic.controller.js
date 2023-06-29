@@ -1,11 +1,58 @@
-import { Topic, TopicCategory } from '../../models/index.js';
+import { Category, Topic, TopicCategory } from '../../models/index.js';
 // Hay 2 metodos de clase:  instancia y clase.
 // SubjectController es el metodo de clase en este caso.
 class TopicController {
 
-    static getTopicById(req, res) {
-        const { id } = req.params;
-        res.status(200).send('This is my route of Topic by id');
+    static async getAllTopics(req, res) {
+        try {
+            const { idUser } = req.params
+                // const topics = await Category.findAll({
+                //     where: { idUser },
+                //     attributes: ["id", "name"],
+                //     include: {
+                //         model: Topic,
+                //         through: {
+                //             attributes: [],
+                //         },
+                //         attributes: ["id", "name"],
+                //     }
+                // });
+            const topics = await Topic.findAll({
+                    attributes: ['id', 'name'],
+                    include: {
+                        model: Category,
+                        through: {
+                            attributes: []
+                        },
+                        attributes: ["name"],
+                        where: {
+                            idUser
+                        }
+                    }
+                }, )
+                //console.log("🚀 ~ file: Topic.controller.js:20 ~ TopicController ~ getAllTopics ~ topics:", topics)
+            if (!topics.length) throw { message: "There are no topics", codeStatus: 404 }
+            res.status(200).send({ success: true, message: "These are all of your Topics", results: topics })
+        } catch (err) {
+            const codeStatus = err.codeStatus || 500
+            const message = err.message || "Internal Server Error"
+            res.status(codeStatus).send({ success: false, message })
+        }
+    }
+
+    static async getTopicById(req, res) {
+        try {
+            const { id } = req.params;
+            const topic = await Topic.findByPk(id, {
+                attributes: ["id", "name", "idStatus"]
+            })
+            if (!topic) throw { message: "Topic not found", codeStatus: 404 }
+            res.status(202).send({ success: true, message: "This is your Topic", results: topic })
+        } catch (err) {
+            const codeStatus = err.CodeStatus || 500
+            const message = err.message || "Internal Server Error"
+            res.status(codeStatus).send({ success: false, message })
+        }
     }
     static async createTopic(req, res) {
         try {
@@ -37,6 +84,7 @@ class TopicController {
                 })
             }
             res.status(201).send({ success: true, message: 'Your Topic has been created successfully' });
+
         } catch (err) {
             const codeStatus = err.codeStatus || 500;
             const message = err.message || 'Internal server error';
@@ -77,13 +125,41 @@ class TopicController {
         }
     }
 
-    static updateTopic(req, res) {
-        // Se trabaja con el id params en la operacion update para agregarlo en la condicion y asi no afecte todos los registros. No olvidar el where.
-        res.status(202).send('This Topic has been updated');
-    }
-    static deleteTopic(req, res) {
+    static async updateTopic(req, res) {
+            try {
+                const { id } = req.params
+                const { name, description, image, idStatus } = req.body
+                if (!name) throw { message: "Your name cannot be empty", codeStatus: 400 }
+                const topicUpdate = await Topic.update({ name, description, image, idStatus }, {
+                        where: {
+                            id,
+                        }
+                    })
+                    //console.log("🚀 ~ file: Topic.controller.js:138 ~ TopicController ~ updateTopic ~ topicUpdate:", topicUpdate[0])
+                if (!topicUpdate[0]) throw { message: "Your Topic was not updated", codeStatus: 500 }
+                res.status(200).send({ success: true, message: "Your Topic was updated successfully" })
+            } catch (err) {
+                const codeStatus = err.codeStatus || 500
+                const message = err.message || "Internal Server Error"
+                res.status(codeStatus).send({ success: false, message })
+            }
+        }
+        // Se trabaja con el id params en la operacion update para agregarlo en la condicion y asi no afecte todos los registros. No olvidar el where.   }
         // Se trabaja con el id params en la operacion delete para agregarlo en la condicion y asi no afecte todos los registros. No olvidar el where.
-        res.status(202).send('Your Topic has been deleted');
+
+    static async deleteTopic(req, res) { // Esta parte no la he probado.  Junio 27 del 2023
+        try {
+            const { id } = req.params
+            const topic = await Topic.destroy({
+                where: { id }
+            })
+            if (!topic) throw { message: "There is no Topic to delete", codeStatus: 400 }
+            res.status(202).send({ success: true, message: "Your Topic has been deleted" })
+        } catch (err) {
+            const codeStatus = err.codeStatus || 500
+            const message = err.message || "Internal Server Error"
+            res.status(codeStatus).send({ success: false, message });
+        }
     }
 }
 export default TopicController;

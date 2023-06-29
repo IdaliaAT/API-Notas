@@ -13,12 +13,13 @@ const topicRoutes = Router();
 // TopicRoutes.get("/prueba", (req, res) => {
 //     res.status(200).send("This is a test")
 // })
-topicRoutes.get('/:id', TopicController.getTopicById);
 // En las lineas 13, 14 y 15 se pisan las rutas por usar el mismo verbo ejm get, porque estan al mismo nivel, pero si no tiene los : el id, no se pisan . Hay que darle otro nivel a mi ruta /….
 
+topicRoutes.get('/:idUser', TopicController.getAllTopics);
+topicRoutes.get('/id/:id', TopicController.getTopicById);
 topicRoutes.post('/', TopicController.createTopic);
 topicRoutes.post('/:idCategory', TopicController.createTopicToCategory)
-topicRoutes.delete('/:id', TopicController.deleteTopic);
 topicRoutes.put('/:id', TopicController.updateTopic);
+topicRoutes.delete('/:id', TopicController.deleteTopic);
 
 export default topicRoutes;

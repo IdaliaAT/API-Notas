@@ -37,7 +37,6 @@ class UserController {
             const { userName, firstName, lastName, email, password } = req.body;
             if (!userName || !firstName || !lastName || !email || !password)
                 throw { message: 'You must fill every field', codeStatus: 400 };
-
             const user = await User.create({
                 userName,
                 firstName,
@@ -50,10 +49,7 @@ class UserController {
                     message: 'Your new user has not been created',
                     codeStatus: 500,
                 };
-
-            res
-                .status(201)
-                .send({ success: true, message: 'Your new user has been created successfully' });
+            res.status(201).send({ success: true, message: 'Your new user has been created successfully' });
         } catch (err) {
             const codeStatus = err.codeStatus || 500;
             const message = err.message || 'Internal Server Error';

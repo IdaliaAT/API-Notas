@@ -14,8 +14,8 @@ routes.use('/user', userRoutes);
 routes.use('/category', categoryRoutes);
 routes.use('/topic', topicRoutes);
 routes.use('/resource', resourceRoutes);
-routes.use('/notes', notesRoutes); //coregir
-routes.use('/status', statusRoutes); //coregir
+routes.use('/note', notesRoutes);
+routes.use('/status', statusRoutes);
 routes.use('/resourceType', resourceTypeRoutes)
 
 export default routes;

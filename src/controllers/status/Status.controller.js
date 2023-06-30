@@ -41,7 +41,6 @@ class StatusController {
                 //console.log("🚀 ~ file: Status.controller.js:21 ~ StatusController ~ createStatus ~ status:", status)
             if (!createStatus) throw { message: "Your status has not been created", codeStatus: 500 }
             res.status(201).send({ success: true, message: "Your status has been created" });
-
         } catch (err) {
             const codeStatus = err.codeStatus || 500
             const message = err.message || "Internal Server Error"

@@ -5,7 +5,7 @@ const notesRoutes = Router();
 
 notesRoutes.get('/', NotesController.getAllNotes);
 notesRoutes.get('/:id', NotesController.getNoteById);
-notesRoutes.post('/', NotesController.createNote);
+notesRoutes.post('/:idTopic', NotesController.createNote);
 notesRoutes.put('/:id', NotesController.updateNote);
 notesRoutes.delete('/:id', NotesController.deleteNote);
 

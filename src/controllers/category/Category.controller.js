@@ -40,7 +40,6 @@ class CategoryController {
                     ],
                 },
             });
-
             res.status(200).send({
                 success: true,
                 message: "This is your route of Category by id",
@@ -68,7 +67,6 @@ class CategoryController {
                     message: 'Something went wrong, your new Category is not created',
                     codeStatus: 500,
                 };
-
             res.status(201).send({
                 success: true,
                 message: 'Your new Category has been created successfully',
@@ -79,7 +77,6 @@ class CategoryController {
             res.status(codeStatus).send({ success: false, message });
         }
     }
-
     static async updateCategory(req, res) {
             try {
                 const { id } = req.params
@@ -99,7 +96,6 @@ class CategoryController {
             }
         }
         // Se trabaja con el id params en la operacion actualizar u update, para agregarlo en la condicion y asi no afecte todos los registros.	No olvidar del where.
-
     static async deleteCategory(req, res) {
         try {
             const { id } = req.params

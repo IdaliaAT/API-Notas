@@ -24,14 +24,12 @@ class ResourceController {
             })
             if (!result) throw { message: 'Resource not found', codeStatus: 404 }
             res.status(200).send({ success: true, message: 'This is your Resource', result })
-
         } catch (err) {
             const codeStatus = err.codeStatus || 500
             const message = err.message || "Internal Server Error"
             res.status(codeStatus).send({ success: false, message })
         }
     }
-
     static async createResource(req, res) {
         try {
             const { idTopic } = req.params
@@ -41,7 +39,6 @@ class ResourceController {
             const resource = await Resource.create({ titleResource, description, url, idResourceType, idTopic })
             if (!resource) throw { message: "Your new resource has not been created", codeStatus: 500 }
             res.status(201).send({ success: true, message: "Your new Resource has been created successfully" })
-
         } catch (err) {
             const codeStatus = err.codeStatus || 500
             const message = err.message || "Internal Server Error"
@@ -51,9 +48,9 @@ class ResourceController {
     static async updateResource(req, res) {
         try {
             const { id } = req.params
-            const { titleResource, description, url, idResourceType, idTopic } = req.body
-            if (!titleResource || !description || !url || !idResourceType || !idTopic) throw { message: "You must indicate what do you want to update", codeStatus: 400 }
-            const resourceUpdate = await Resource.update({ titleResource, description, url, idResourceType, idTopic }, {
+            const { titleResource, description, url, idResourceType } = req.body
+            if (!titleResource || !description || !url || !idResourceType) throw { message: "You must indicate what do you want to update", codeStatus: 400 }
+            const resourceUpdate = await Resource.update({ titleResource, description, url, idResourceType }, {
                 where: { id }
             })
             console.log("🚀 ~ file: Resource.controller.js:59 ~ ResourceController ~ updateResource ~ resourceUpdate:", resourceUpdate[0])
@@ -64,7 +61,6 @@ class ResourceController {
             const message = err.message || "Internal Server Error"
             res.status(codeStatus).send({ success: false, message })
         }
-
     }
     static async deleteResource(req, res) {
         try {
@@ -73,8 +69,8 @@ class ResourceController {
                     where: { id }
                 })
                 //console.log("🚀 ~ file: Resource.controller.js:76 ~ ResourceController ~ deleteResource ~ resourceDelete:", resourceDelete)
-            if (!resourceDelete) throw { message: "There is something wrong, your Resource was not delete", codeStatus: 500 }
-            res.status(200).send({ success: true, message })
+            if (!resourceDelete) throw { message: "There is something wrong, your Resource was not deleted", codeStatus: 500 }
+            res.status(200).send({ success: true, message: "Your Resource has been deleted" })
         } catch (err) {
             const codeStatus = err.codeStatus || 500
             const message = err.message || "Internal Server Error"
